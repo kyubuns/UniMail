@@ -17,6 +17,10 @@ public class Sample : MonoBehaviour
 
 Sample Script: [Sample.cs](https://github.com/kyubuns/UniMail/blob/master/Assets/Plugins/UniMail/Sample/Sample.cs)
 
+## How to use
+
+* Import unity package https://github.com/kyubuns/UniMail/releases
+
 ## Supported Platform
 
 ### Send email with image
