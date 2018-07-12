@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace UniBugReporter
@@ -16,16 +17,34 @@ namespace UniBugReporter
 
 		public void Awake()
 		{
-			DontDestroyOnLoad(gameObject);
-			ScreenShotFileName = "BugReport.png";
+			AwakeBody();
 		}
 
 		public void OnEnable()
 		{
-			Application.logMessageReceived += HandleLog;
+			OnEnableBody();
 		}
 
 		public void OnDisable()
+		{
+			OnDisableBody();
+		}
+
+		[Conditional("DEVELOPMENT_BUILD")]
+		private void AwakeBody()
+		{
+			DontDestroyOnLoad(gameObject);
+			ScreenShotFileName = "BugReport.png";
+		}
+
+		[Conditional("DEVELOPMENT_BUILD")]
+		private void OnEnableBody()
+		{
+			Application.logMessageReceived += HandleLog;
+		}
+
+		[Conditional("DEVELOPMENT_BUILD")]
+		private void OnDisableBody()
 		{
 			Application.logMessageReceived -= HandleLog;
 		}
@@ -34,12 +53,13 @@ namespace UniBugReporter
 		{
 			if (string.IsNullOrEmpty(message)) return;
 			if (!EnableOnEditor && Application.isEditor) return;
+			if (!Reporter.IsReportTarget(message, stackTrace, type)) return;
 
 			if (Application.platform == RuntimePlatform.IPhonePlayer)
 			{
 				StartCoroutine(CaptureScreenshot(() =>
 				{
-					Reporter.Report(message, stackTrace, type, null);
+					Reporter.Report(message, stackTrace, type, ScreenShotFilePath);
 				}));
 			}
 			else
