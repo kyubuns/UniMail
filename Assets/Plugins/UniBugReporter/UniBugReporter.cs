@@ -72,7 +72,7 @@ namespace UniBugReporter
 		{
 			Directory.CreateDirectory(Application.persistentDataPath);
 			if (File.Exists(ScreenShotFilePath)) File.Delete(ScreenShotFilePath);
-			Application.CaptureScreenshot(ScreenShotFileName);
+			ScreenCapture.CaptureScreenshot(ScreenShotFileName);
 			yield return new WaitUntil(() => File.Exists(ScreenShotFilePath));
 			callback();
 		}

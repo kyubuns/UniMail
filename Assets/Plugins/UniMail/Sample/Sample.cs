@@ -35,7 +35,7 @@ namespace UniMail.Sample
 		{
 			Directory.CreateDirectory(Application.persistentDataPath);
 			if (File.Exists(ScreenShotPath)) File.Delete(ScreenShotPath);
-			Application.CaptureScreenshot(ScreenShotFileName);
+			ScreenCapture.CaptureScreenshot(ScreenShotFileName);
 
 			yield return new WaitUntil(() => File.Exists(ScreenShotPath));
 			callback();
